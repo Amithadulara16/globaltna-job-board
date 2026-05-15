@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+
 const Navbar = () => {
   return (
     <nav className="bg-white border-b border-gray-200">

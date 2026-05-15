@@ -6,10 +6,10 @@ export const getJobs = async (category?: string) => {
   return res.json();
 };
 
-// මෙය jobService.ts එකට අලුතින් එක් කරන්න
+//id update
 export const getJobById = async (id: string) => {
   const res = await fetch(`${API_URL}/${id}`, { cache: 'no-store' });
-  if (!res.ok) return null; // සොයාගත නොහැකි නම් null එවන්න
+  if (!res.ok) return null; 
   return res.json();
 };
 

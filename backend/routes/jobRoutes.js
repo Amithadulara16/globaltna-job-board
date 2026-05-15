@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const JobRequest = require('../models/JobRequest');
 
-// 1. සියලුම රැකියා ලබා ගැනීම (Filters සමඟ)
+//all job requests related routes
 router.get('/', async (req, res) => {
     try {
         const { category, status } = req.query;
@@ -10,31 +10,31 @@ router.get('/', async (req, res) => {
         if (category) filter.category = category;
         if (status) filter.status = status;
 
-        const jobs = await JobRequest.find(filter).sort({ createdAt: -1 }); // අලුත්ම ඒවා උඩට එන ලෙස
+        const jobs = await JobRequest.find(filter).sort({ createdAt: -1 }); 
         res.json(jobs);
     } catch (err) {
         console.error("Error fetching jobs:", err);
-        res.status(500).json({ error: "දත්ත ලබා ගැනීමේ දෝෂයක්!" });
+        res.status(500).json({ error: "Error fetching jobs" });
     }
 });
 
-// 2. ID එක මගින් රැකියාවක විස්තර ලබා ගැනීම
+//id update
 router.get('/:id', async (req, res) => {
     try {
-        console.log("Fetching Job ID:", req.params.id); // Debugging සඳහා
+        console.log("Fetching Job ID:", req.params.id); // Debugging 
         const job = await JobRequest.findById(req.params.id);
         
         if (!job) {
-            return res.status(404).json({ message: "එම ID එක සහිත රැකියාව සොයාගත නොහැක." });
+            return res.status(404).json({ message: "Job not found" });
         }
         res.json(job);
     } catch (err) {
         console.error("Error fetching job by ID:", err);
-        res.status(500).json({ error: "ID එක පරීක්ෂා කිරීමේදී දෝෂයක් ඇති විය." });
+        res.status(500).json({ error: "Error fetching job by ID" });
     }
 });
 
-// 3. අලුත් රැකියාවක් ඇතුළත් කිරීම
+//create job
 router.post('/', async (req, res) => {
     try {
         const newJob = new JobRequest(req.body);
@@ -45,7 +45,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-// 4. රැකියාවක තත්ත්වය (Status) වෙනස් කිරීම
+//status update
 router.patch('/:id', async (req, res) => {
     try {
         const updatedJob = await JobRequest.findByIdAndUpdate(
@@ -59,7 +59,7 @@ router.patch('/:id', async (req, res) => {
     }
 });
 
-// 5. රැකියාවක් මකා දැමීම
+//delete job
 router.delete('/:id', async (req, res) => {
     try {
         await JobRequest.findByIdAndDelete(req.params.id);
